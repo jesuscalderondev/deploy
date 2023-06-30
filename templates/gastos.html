@@ -1,0 +1,97 @@
+{%extends 'base.html'%}
+{%block titulo%}Busqueda egresos{%endblock%}
+{%block cuerpo%}
+<div class="form-floating mb-3">
+    <input type="text" class="form-control" id="floatingInput"
+        placeholder="Datos validos bsuqueda(No. Póliza, descripcion, fecha)">
+    <label for="floatingInput">Busqueda</label>
+</div>
+
+<div class="contenedor-tabla">
+    <table class="table" id="registros">
+        <thead class="thead-dark">
+            <tr>
+                <th>Fecha</th>
+                <th>No. Póliza</th>
+                <th>Descripción</th>
+                <th>Total</th>
+                <th>Revisada</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in registros %}
+            <tr>
+                <td>{{i.FECHA_POLIZA}}</td>
+                <td>{{i.NO_POLIZA}}</td>
+                <td>{{i.DESCRIPCION}}</td>
+                <td style="text-align: right;">{{i.TOTAL_GENERAL}}</td>
+                {% if i.REVISADO != None%}
+                <td class="item"><i class="fa-solid fa-check" style="color: green;"></i>
+                </td>
+                {%endif%}
+                {% if i.REVISADO == None %}
+                <td class="item"><i class="fa-solid fa-xmark" style="color: red;"></i></td>
+                {%endif%}
+                <td class="acciones"><a href="/gastos/info/{{i.NO_POLIZA}}"><i class="fa-solid fa-eye"></i></a><a href="/gastos/edit/{{i.NO_POLIZA}}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+<script>
+    var cargador = document.getElementById("cargador");
+    var bsuquedaa = document.getElementById("floatingInput");
+
+    bsuquedaa.addEventListener("input", function(){
+        
+        if (this.value != ""){
+            cargador.style.display = "flex";    
+            fetch('/gastos/busqueda/'+this.value)
+            .then(response => response.json())
+            .then(data => {
+                cargador.style.display = "none";
+                var tabla = document.getElementById("registros");
+                var filas = tabla.getElementsByTagName("tr");
+
+      // Verifica si hay más de una fila (excluye la fila de encabezado)
+                for (var i = filas.length - 1; i > 0; i--) {
+                    tabla.deleteRow(i);
+                }
+                var llaves = Object.keys(data);
+                console.log(llaves);
+                llaves.forEach(element => {
+                    var objeto = data[element]
+                    var fila = tabla.insertRow();
+                    var celda1 = fila.insertCell();
+                    var celda2 = fila.insertCell();
+                    var celda3 = fila.insertCell();
+                    var celda4 = fila.insertCell();
+                    var celda5 = fila.insertCell();
+                    var celda6 = fila.insertCell();
+
+                    celda5.className = 'item';
+                    celda4.className = 'impor';
+                    celda6.className = 'acciones'
+
+                    celda1.innerHTML = objeto.fecha;
+                    celda2.innerHTML = objeto.poliza;
+                    celda3.innerHTML = objeto.descripcion;
+                    celda4.innerHTML = objeto.total;
+                    if(objeto.revisado != "None"){
+                        celda5.innerHTML = "<i class='fa-solid fa-check' style='color: green;'></i>";
+                    }else{
+                        celda5.innerHTML = "<i class='fa-solid fa-xmark' style='color: red;'></i>";
+                    }
+                    celda6.innerHTML = "<a href='/gastos/info/" + objeto.poliza + "'><i class='fa-solid fa-eye'></i></a><a href='/gastos/edit/" + objeto.poliza +"'><i class='fa-solid fa-pen-to-square'></i></a>"
+                });
+            })
+            .catch(error => {
+                console.error("Error en la comunicación con el servidor", error);
+            });
+        }
+    });
+
+
+</script>
+{%endblock%}

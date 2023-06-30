@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+{%block titulo%}Contabilidad{%endblock%}
+{%block cuerpo%}
+<div class="container">
+    <h1>Ejemplo de lista anidada con Bootstrap</h1>
+
+    <ul class="list-unstyled">
+        <li>Elemento 1</li>
+        <li>Elemento 2
+            <ul>
+                <li>Subelemento 2.1</li>
+                <li>Subelemento 2.2
+                    <ul>
+                        <li>Subsubelemento 2.2.1</li>
+                        <li>Subsubelemento 2.2.2</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>Elemento 3</li>
+    </ul>
+</div>
+{%endblock%}

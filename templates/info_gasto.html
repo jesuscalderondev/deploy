@@ -1,0 +1,159 @@
+{%extends 'base.html'%}
+{%block titulo%}Inromación de póliza{%endblock%}
+{%block cuerpo%}
+<script>
+    var cargador = document.getElementById("cargador");
+    cargador.style.display = "flex";
+    fetch('/api/cuentas_recibos/{{gasto.NO_POLIZA}}')
+        .then(response => response.json())
+        .then(data => {
+            var tabla = document.getElementById("registros");
+            var filas = tabla.getElementsByTagName("tr");
+
+            // Verifica si hay más de una fila (excluye la fila de encabezado)
+            for (var i = filas.length - 1; i > 0; i--) {
+                tabla.deleteRow(i);
+            }
+            var llaves = Object.keys(data);
+            console.log(llaves);
+            var debe = 0, haber = 0;
+            llaves.forEach(element => {
+                var objeto = data[element]
+
+                var movimientos = Object.keys(objeto);
+
+                movimientos.forEach(elemento => {
+                    var movi = objeto[elemento]
+                    var fila = tabla.insertRow();
+                    var celda1 = fila.insertCell();
+                    var celda2 = fila.insertCell();
+                    var celda3 = fila.insertCell();
+                    var celda4 = fila.insertCell();
+
+
+                    celda3.style = "text-align: right;";
+                    celda4.style = "text-align: right;";
+
+                    celda1.innerHTML = "<p class = 'arriba'>" + movi.no_cuenta + "</p>" + "<p></p>";
+                    celda2.innerHTML = movi.nombre + "<p class='concepto_movimiento'>" + movi.movimiento + "</p>";
+
+                    console.log(movi.debe);
+                    if (movi.debe > 0) {
+                        celda3.innerHTML = movi.debe + "<p></p>";
+                        debe = debe + parseFloat(movi.debe);
+                    }
+
+                    if (movi.haber > 0) {
+                        celda4.innerHTML = movi.haber + "<p></p>";
+                        console.log(elemento, "punto");
+                        haber = haber + parseFloat(movi.haber);
+                        if (elemento == "movimiento_total") {
+                            console.log("es esta");
+                            var filas = tabla.getElementsByTagName("tr");
+                            var filaEspecifica = filas[1]; // Por ejemplo, la segunda fila
+                            filaEspecifica.style.marginBottom = "1px solid #bbbbbb";
+                        }
+                    }
+                });
+
+
+
+                /*var fila = tabla.insertRow();
+                fila.style = "height: 80px;";
+                var celda4 = fila.insertCell();
+                celda4.className = 'impor';
+                */
+            })
+            cargador.style.display = "none";
+        })
+        .catch(error => {
+            console.error("Error en la conexión: ", error);
+        });
+
+    function abrir_pdf(){
+        window.location.href = "/poliza/descarga/{{gasto.NO_POLIZA}}";
+    }
+
+    function volver(){
+        window.location.href = "/gastos";
+    }
+</script>
+<div class="btn-group" role="group" aria-label="Basic outlined example">
+    {%if gasto.REVISADO == None%}
+    <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-user-check"></i></button>
+    {%endif%}
+    <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+    <button type="button" onclick="abrir_pdf()" class="btn btn-outline-primary"><i class="fa-solid fa-file-pdf"></i></button>
+    <button type="button" onclick="volver()" class="btn btn-outline-primary"><i class="fa-solid fa-arrow-left"></i></button>
+</div>
+
+<hr>
+<br>
+
+<div class="row">
+    <div class="col">
+        <H4>POLIZA NO.: <b>{{gasto.NO_POLIZA}}</b></H4>
+    </div>
+    <div class="col">
+        <h4>estado: <b class="cuadro">{{gasto.ESTATUS}}</b></h4>
+    </div>
+    <div class="col">
+        <h4>fecha: <b>{{gasto.FECHA_POLIZA}}</b></h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h4>CONCEPTO: <b>{{gasto.DESCRIPCION}}</b></h4>
+    </div>
+</div>
+<hr class="cabecera">
+
+<div class="contenedor_tabla">
+    <table class="table table-borderless" id="registros">
+        <thead class="thead-dark">
+            <tr style="border-bottom: 1px solid #000;">
+                <th class="center no_cuenta">no. cuenta <p></p>
+                </th>
+                <th>nombre de la cuenta <p class="concepto_movimiento">concepto o movimiento</p>
+                </th>
+                <th class="center money">debe <p></p>
+                </th>
+                <th class="center money">haber <p></p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="fila">
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="contenedor_sumas">
+    <table class="table-borderless">
+        <thead class="thead-dark">
+            <tr class="sumas_iguales">
+                <th class="vacio"></th>
+                <th class="nada">sumas iguales:</th>
+                <th style="text-align: right;" class="nada">{{gasto.TOTAL_GENERAL}}</th>
+                <th style="text-align: right;" class="nada">{{gasto.TOTAL_GENERAL}}</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<br>
+<div class="contendor_personal">
+    <div class="casilla contenedor_editor">
+        <h4>HECHO POR:</h4>
+        <h5>{{gasto.EDITOR_USER}}</h5>
+    </div>
+    <div class="casilla contendor_revisado central">
+        <h4>REVISADO POR:</h4>
+        <h5>{{gasto.REVISADO}}</h5>
+    </div>
+    <div class="casilla contenedor_poliza">
+        <h4>POLIZA NO.:</h4>
+        <h5>{{gasto.NO_POLIZA}}</h5>
+    </div>
+</div>
+{%endblock%}

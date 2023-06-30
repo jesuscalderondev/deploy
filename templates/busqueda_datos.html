@@ -1,0 +1,168 @@
+{%extends 'base.html'%}
+{%block cuerpo%}
+<div class="contenedor_busqueda">
+	<div class="contenedor_input_busqueda">
+		<ul>
+			<li>
+				<label for="buscar_compra">Compras</label>
+				<input type="checkbox" id="buscar_compra">
+				<li id="compra">
+					<input type="text" onkeyup="buscar(this.value)" class="busqueda compra" id="busqueda" placeholder="Concepto de la compra">
+				</li>
+			</li>
+			
+			<li>
+				<label for="buscar_cliente">Clientes</label>
+				<input type="checkbox" id="buscar_cliente">
+				<li id="cliente">
+					<label for="ciudad">Busaqueda:</label>
+					<input type="text" id="ciudad">
+					<button id="buscar" onclick="buscar_cliente()">BUSCAR</button>
+				</li>
+			</li>
+			<li>
+				<label for="buscar_prospecto">Prospecto</label>
+				<input type="checkbox" id="buscar_prospecto">
+				<li id="prospecto">
+					<input type="text" onkeyup="buscar_prospecto(this.value)" class="busqueda prospecto" id="busqueda_pr" placeholder="Nombre del prospecto">
+				</li>
+			</li>
+
+			<li>
+				<label for="buscar_empleado">Empleado</label>
+				<input type="checkbox" id="buscar_empleado">
+				<li id="empleado">
+					<input type="text" onkeyup="buscar_empleado(this.value)" class="busqueda empleado" id="busqueda_em" placeholder="Nombre del empleado">
+				</li>
+			</li>
+		</ul>
+	</div>
+	<div id="contenido">
+		
+	</div>
+</div>
+<script type="text/javascript">
+	function buscar(busqueda){
+		fetch('http://127.0.0.1:5000/buscar_compra/'+busqueda, {method: 'GET'})
+		.then(response=> response.json())
+		.then(function(compras){
+			console.log(compras.length);
+			if(compras.length > 0){
+				const div = document.getElementById('contenido');
+
+				if (div.isConnected) {
+					console.log('está');
+					div.remove();
+				} else {
+					console.log('No está');
+				}
+				
+				console.log(div.isConnected);
+				document.querySelector('.contenedor_busqueda').appendChild(div);
+				div.textContent = '';
+				for (var i = compras.length - 1 ; i >= 0; i--) {
+					const fila = document.createElement('div');
+					fila.id = "fila";
+					document.getElementById("contenido").appendChild(fila);
+					fila.innerHTML= "<ul><a href='/detalle/"+ compras[i]['id'] +"'><li class=titulo'>"+compras[i]['descripcion']+ " - " + compras[i]['fecha'] + compras[i]['hora']+ "</li></a><li class='detalles'>Total: "+compras[i]['total']+"</li><li class='detalles'>Área: "+ compras[i]['area'] +"</li></ul>";
+				}
+			}
+			else{
+				const div = document.getElementById('contenido');
+				document.querySelector('.contenedor_busqueda').appendChild(div);
+				div.textContent = '';
+				const fila = document.createElement('div');
+				fila.id = "fila";
+				document.getElementById("contenido").appendChild(fila);
+				fila.innerHTML = "<h2>Ninguna coincidencia</h2><br><p>No hay resultados para '"+ busqueda +"'. <br>Verifica que esté bien escrito tu dato de consulta.</p>";
+			}
+		})
+	}
+
+	var compra = document.getElementById('buscar_compra');
+	compra.addEventListener("change", function(){
+		var estado = compra.checked;
+		if(estado){
+			document.getElementById('busqueda').style.height = "40px";
+		}
+		else{
+			document.getElementById('busqueda').style.height = "0";
+		}
+	});
+
+	var cliente = document.getElementById('buscar_cliente');
+	cliente.addEventListener("change", function(){
+		var estado = cliente.checked;
+		if(estado){
+			document.getElementById('cliente').style.display = "block";
+
+		}
+		else{
+			document.getElementById('cliente').style.display = "none";
+		}
+	});
+
+	var pais_r = document.getElementById('pais_r');
+	pais_r.addEventListener('change', function(){
+	    fetch('http://127.0.0.1:5000/obtener_ciudades/'+pais_r.value, {method:'GET'})
+	    .then(response => response.json())
+	    .then(function(ciudades){
+	        let select = document.getElementById('estadod');
+	        let elementos = ciudades.length;
+	        let options;
+	        for (let index = 0; index < elementos; index++){
+	            options = options + "<option value='"+ciudades[index]+"'>"+ciudades[index]+"</option>"
+	        }
+	        select.innerHTML = "<label for='estadord'>Estado: </label>"+"<select name='estado_domicilio' id='estadord'>"+options+"</select>";
+	        document.getElementById('ciudad').disabled = false;
+	        document.getElementById('buscar').disabled = false;
+	    })
+	});
+
+	function buscar_cliente(){
+		let ciudad = document.getElementById('ciudad').value;
+
+		if(ciudad == ''){
+			ciudad = 'nada'
+		}
+		let peticion = ciudad
+		fetch('http://127.0.0.1:5000/buscar_cliente/'+ peticion, {method: 'GET'})
+		.then(response => response.json())
+		.then(function(dato){
+			
+
+			if(Object.keys(dato).length > 0){
+				const div = document.getElementById('contenido');
+
+				if (div.isConnected) {
+					console.log('está');
+					div.remove();
+				} else {
+					console.log('No está');
+				}
+				
+				console.log(div.isConnected);
+				document.querySelector('.contenedor_busqueda').appendChild(div);
+				div.textContent = '';
+				for (var i in dato) {
+					const fila = document.createElement('div');
+					fila.id = "fila";
+					document.getElementById("contenido").appendChild(fila);
+					fila.innerHTML= "<ul><a href='/detalle/cliente/"+ dato[i]['NID_CLIENTE'] +"'><li class=titulo'>" + "Cliente: " + dato[i]['CLIENTE'] + "</li></a><li class='detalles'>Calle: "+dato[i]['CALLE']+"</li><li class='detalles'>CIUDAD: "+ dato[i]['CIUDAD'] +"</li></ul>";
+				}
+			}
+			else{
+				const div = document.getElementById('contenido');
+				document.querySelector('.contenedor_busqueda').appendChild(div);
+				div.textContent = '';
+				const fila = document.createElement('div');
+				fila.id = "fila";
+				document.getElementById("contenido").appendChild(fila);
+				fila.innerHTML = "<h2>Ninguna coincidencia</h2><br><p>No hay resultados para los clientes de '"+ pais + " " +  estado + " " + ciudad +"'. <br>Verifica que esté bien escrito tu dato de consulta.</p>";
+			}
+
+
+		})
+	}
+</script>
+{%endblock%}

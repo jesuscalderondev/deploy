@@ -1,0 +1,312 @@
+{%extends 'base.html'%}
+{%block body%}
+<div class="contenedor_pagina_cliente">
+    <h2>REGISTRO</h2>
+    <hr>
+    <div class="contenedor_form_cliente">
+        <form action="/agregar_cliente" method="post">
+            <div id="personales">
+            
+            </div>
+            <hr>
+            <div id="negocio">
+                <h2>Datos del Negocio</h2>
+                <label for="si">Mismo domicilio que el particular: </label>
+                <input type="checkbox" id="si">
+                <label for="nombre_negocio">Nombre del negocio:</label>
+                <input type="text" id="nombre_negocio" name="nombre_negocio">
+                <label for="giro_negocio">Giro del negocio:</label>
+                <input type="text" id="giro_negocio" name="giro_negocio">
+                <label for="horario">Horario: </label>
+                <input type="text" name="horario" id="horario">
+                <label for="tiempo_domicilio_negocio">Tiempo de antigüedad en el domicilio: </label>
+                <input type="text" id="tiempo_domicilio_negocio" name="antiguedad_negocio">
+                <label for="ingresos_d">Ingresos diarios:</label>
+                <input type="text" name="ingresos_diarios" id="ingresos_d" onblur="formatNumber(this)">
+                <label for="otros_ingresos">Otros ingresos:</label>
+                <input type="text" name="otros_ingresos" id="otros_ingresos" onblur="formatNumber(this)"><br>
+                <label for="dir_n">Calle: </label>
+                <input type="text" name="calle_negocio" id="dir_n">
+                <label for="entre_calle_negocio">Entre calle:</label>
+                <input type="text" name="entre_calle_negocio" id="entre_calle_negocio">
+                <label for="y_calle_negocio">Y calle:</label>
+                <input type="text" name="y_calle_negocio" id="y_calle_negocio">
+                <label for="no_exterior_negocio">No. exterior</label>
+                <input type="text" id="no_exterior_negocio" name="no_exterior_negocio">
+                <label for="no_interior_negocio">No. interior</label>
+                <input type="text" id="no_interior_negocio" name="no_interior_negocio">
+                <label for="colonia_n">Colonia:</label>
+                <input type="text" name="colonia_negocio" id="colonia_n">
+                <label for="codigop_negocio">Código postal:</label>
+                <input type="text" name="codigo_postal_negocio" id="codigo_postal_negocio">
+                <label for="estado_negocio">Estado:</label>
+                <input type="text" name="estado_negocio" id="estado_negocio">
+                <label for="ciudad_negocio">Ciudad negocio:</label>
+                <input type="text" name="ciudad_negocio" id="ciudad_negocio"><br>
+                <label for="descripcion_negocio">Detalles del domicilio:</label>
+                <input type="text" name="caracteristicas_negocio" id="descripcion_negocio">
+                <label for="cel_negocio">Celular:</label>
+                <input type="text" name="telefono" id="cel_negocio">
+                <label for="ruta_asignada">Ruta asignada:</label>
+                <select name="ruta" id="ruta">
+                    <option value="1">Primera</option>
+                    <option value="2">Segunda</option>
+                    <option value="3">Tercera</option>
+                </select>
+
+            </div>
+            <hr>
+            <div id="informativos">
+                <h2>Datos informativos</h2>
+                <h4>Referencia Familiar</h4>
+                <label for="nombre_familiar">Nombre:</label>
+                <input type="text" id="nombre_familiar" name="nombre_referencia1">
+                <label for="direccion_familiar">Dirección:</label>
+                <input name="direccion_ref1" type="text" id="direccion_familiar">
+                <label for="telefono_ref1">Celular:</label>
+                <input type="text" name="telefono_ref1" id="telefono_ref1">
+                <br><br>
+                <h4>Referencia particular</h4>
+                <label for="nombre_particular">Nombre:</label>
+                <input type="text" id="nombre_particular" name="nombre_referencia2">
+                <label for="direccion_particular">Dirección:</label>
+                <input type="text" name="direccion_ref2" id="direccion_particular">
+                <label for="telefono_ref2">Celular:</label>
+                <input type="text" name="telefono_ref2" id="telefono_ref2">
+                <br><br>
+                <h4>Observaciones</h4>
+                <label for="observacion1">Observación #1</label>
+                <input type="text" id="observacion1" name="observacion_1">
+                <br>
+                <label for="observacion2">Observación #2</label>
+                <input type="text" id="observacion2" name="observacion_2">
+                <br>
+                <label for="observacion3">Observación #3</label>
+                <input type="text" id="observacion3" name="observacion_3">
+                <br><br><br>
+                <button id="agregar" type="submit">Agregar</button>
+                <button type="reset">Limpiar</button>
+            </div>
+            
+        </form>
+    </div>
+    <br>
+    <hr>
+    <br>
+    
+</div>
+<script>
+
+function formatNumber(input) {
+  // Reemplaza cualquier carácter que no sea un número o un punto decimal
+  input.value = input.value.replace(/[^\d\.]/g, '');
+  
+  // Divide la cadena en dos partes en el punto decimal
+  const parts = input.value.split('.');
+  let wholeNumber = parts[0];
+  let decimal = parts[1];
+  
+  // Elimina los caracteres de separación de miles
+  wholeNumber = wholeNumber.replace(/,/g, '');
+  
+  // Concatena ".00" al final si no hay parte decimal
+  if (!decimal) {
+    input.value = wholeNumber + ".00";
+    return;
+  }
+  
+  // Redondea la parte decimal a dos decimales
+  decimal = parseFloat("0." + decimal).toFixed(2).split(".")[1];
+  
+  // Combina la parte entera y la parte decimal del número con un punto
+  input.value = wholeNumber + '.' + decimal;
+}
+
+    const phoneInput = document.getElementById('numcel');
+    phoneInput.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = phoneInput.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    phoneInput.value = phoneValue;
+    });
+
+    const telInput = document.getElementById('cel_negocio');
+    telInput.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = telInput.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    telInput.value = phoneValue;
+    });
+
+    const tel_ref1Input = document.getElementById('telefono_ref1');
+    tel_ref1Input.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = tel_ref1Input.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    tel_ref1Input.value = phoneValue;
+    });
+
+    const tel_ref2Input = document.getElementById('telefono_ref2');
+    tel_ref2Input.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = tel_ref2Input.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    tel_ref2Input.value = phoneValue;
+    });
+
+    var pais = document.getElementById('pais');
+    pais.addEventListener('change', function(){
+        fetch('http://127.0.0.1:5000/obtener_ciudades/'+pais.value, {method:'GET'})
+        .then(response => response.json())
+        .then(function(ciudades){
+            let select = document.getElementById('estadodiv');
+            let elementos = ciudades.length;
+            let options;
+            for (let index = 0; index < elementos; index++){
+                options = options + "<option value='"+ciudades[index]+"'>"+ciudades[index]+"</option>"
+            }
+            select.innerHTML = "<label for='estado'>Entidad federativa de nacimiento: </label>"+"<select name='estado_nacimiento' id='estado'>"+options+"</select>";
+        })
+    });
+
+    var pais_r = document.getElementById('pais_r');
+    pais_r.addEventListener('change', function(){
+        fetch('http://127.0.0.1:5000/obtener_ciudades/'+pais_r.value, {method:'GET'})
+        .then(response => response.json())
+        .then(function(ciudades){
+            let select = document.getElementById('estadord');
+            let elementos = ciudades.length;
+            let options;
+            for (let index = 0; index < elementos; index++){
+                options = options + "<option value='"+ciudades[index]+"'>"+ciudades[index]+"</option>"
+            }
+            select.innerHTML = "<label for='estadord'>Estado de domicilio: </label>"+"<select name='estado_domicilio' id='estadord'>"+options+"</select>";
+        })
+    });
+
+
+    function buscar(busqueda){
+		fetch('http://127.0.0.1:5000/buscar_cliente/'+busqueda, {method: 'GET'})
+		.then(response=> response.json())
+		.then(function(cliente){
+			console.log(cliente.length);
+            let nombre = document.getElementById('nombre_mostrar');
+            let cel = document.getElementById('cel');
+            let email = document.getElementById('ema');
+            let dirc = document.getElementById('dirc');
+            let ndoc = document.getElementById('ndoc_m');
+            let tdoc = document.getElementById('tdoc_m');
+            let ncred = document.getElementById('ncred');
+            let mcred = document.getElementById('mcred');
+            let puntos = document.getElementById('puntos');
+            let calificacion = document.getElementById('calificacion');
+			if(cliente.length > 0){
+
+			}
+			else{
+				const div = document.getElementById('contenido');
+				document.querySelector('.contenedor_busqueda').appendChild(div);
+				div.textContent = '';
+				const fila = document.createElement('div');
+				fila.id = "fila";
+				document.getElementById("contenido").appendChild(fila);
+				fila.innerHTML = "<h2>Ninguna coincidencia</h2><br><p>No hay resultados para '"+ busqueda +"'. <br>Verifica que esté bien escrito tu dato de consulta.</p>";
+			}
+		})
+	}
+
+    var busi = document.getElementById('si');
+    busi.addEventListener('change', () => {
+        let direccion = document.getElementById('direccion').value;
+        let direccion_n = document.getElementById('dir_n');
+
+        let colonia = document.getElementById('colonia').value;
+        let colonia_negocio = document.getElementById('colonia_n');
+
+        let ciudad = document.getElementById('ciudad_residencia').value;
+        let ciudad_negocio = document.getElementById('ciudad_negocio');
+        
+        let codigop_negocio = document.getElementById('codigo_postal_negocio');
+        let codigop = document.getElementById('codigo_postal').value;
+
+        let descripcion_negocio = document.getElementById('descripcion_negocio');
+        let descripcion = document.getElementById('descripcion').value;
+
+        let exterior = document.getElementById('no_exterior').value;
+        let exterior_negocio = document.getElementById('no_exterior_negocio');
+
+        let interior = document.getElementById('no_interior').value;
+        let interior_negocio = document.getElementById('no_interior_negocio');
+
+        let entre = document.getElementById('entre_calle_dom').value;
+        let entre_negocio = document.getElementById('entre_calle_negocio');
+
+        let y_calle = document.getElementById('y_calle').value;
+        let y_negocio = document.getElementById('y_calle_negocio');
+
+        let estado_negocio = document.getElementById('estado_negocio');
+        let estado = document.getElementById('estadord').value;
+        
+        
+        if(busi.checked){
+            direccion_n.value = direccion;
+            colonia_negocio.value = colonia;
+            descripcion_negocio. value = descripcion;
+            codigop_negocio.value = codigop;
+            ciudad_negocio.value = ciudad;
+            y_negocio.value = y_calle;
+            entre_negocio.value = entre;
+            interior_negocio.value = interior;
+            exterior_negocio.value = exterior;
+
+            direccion_n.disabled = true;
+            colonia_negocio.disabled=true;
+            descripcion_negocio.disabled = true;
+            codigop_negocio.disabled=true;
+            ciudad_negocio.disabled=true;
+            y_negocio.disabled=true;
+            entre_negocio.disabled=true;
+            interior_negocio.disabled=true;
+            exterior_negocio.disabled=true;
+        }
+        else{
+            direccion_n.value = '';
+            colonia_negocio.value = '';
+            codigop_negocio.value = '';
+            descripcion_negocio.value = '';
+            ciudad_negocio.value = '';
+            y_negocio.value = '';
+            entre_negocio.value = '';
+            interior_negocio.value = '';
+            exterior_negocio.value = '';
+
+            direccion_n.disabled = false;
+            colonia_negocio.disabled=false;
+            descripcion_negocio.disabled = false;
+            codigop_negocio.disabled=false;
+            ciudad_negocio.disabled=false;
+            y_negocio.disabled=false;
+            entre_negocio.disabled=false;
+            interior_negocio.disabled=false;
+            exterior_negocio.disabled=false;
+
+        }
+    });
+</script>
+{%endblock%}

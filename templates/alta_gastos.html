@@ -1,0 +1,591 @@
+{%extends 'base.html'%}
+{%block titulo%}Egresos{%endblock%}
+{%block cuerpo%}
+<h2>EGRESO NO. {{poliza}}</h2>
+<br>
+
+<form action="" id="agregar_registro" class="row g-3">
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="forma_pago" id="forma_pago"
+                    aria-label="Floating label select example">
+                    <option selected disabled>Seleccionar</option>
+                    {%for i in ["EFECTIVO", "CHEQUE", "TRANSFERENCIA", "TARJETA CREDITO", "TARJETA DEBITO"]%}
+                    <option value="{{i}}">{{i}}</option>
+                    {%endfor%}
+                </select>
+                <label for="floatingSelect">Forma de pago</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="cta_pago" id="cta_pago" aria-label="Floating label select example">
+                </select>
+                <label for="floatingSelect">Cta. Pago</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input type="date" name="fecha_pago" class="form-select" id="fecha_pago"
+                    aria-label="Floating label select example">
+                </input>
+                <label for="floatingSelect">Fecha</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="descripcion" id="descripcion"
+                    aria-label="Floating label select example">
+                </input>
+                <label for="descripcion">Descripción</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="categoria" id="categoria" aria-label="Floating label select example">
+                    <option disabled selected>Seleccionar</option>
+                    <option value="COMPRAS">COMPRAS</option>
+                    <option value="GASTOS_GENERALES">GASTOS GENERALES</option>
+                    <option value="GASTOS_FINANCIEROS">GASTOS FINANCIEROS</option>
+                    <option value="OTROS_GASTOS">OTROS GASTOS</option>
+                    <option value="INVERSIONES">INVERSIONES</option>
+                </select>
+                <label for="categoria">Categoría</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="proveedor" id="proveedor" aria-label="Floating label select example">
+                    <option disabled selected>Seleccionar</option>
+                    {% for i in proveedores %}
+                    <option value="{{i.DESCRIPCION}}">{{i.DESCRIPCION}}</option>
+                    {%endfor%}
+                </select>
+                <label for="proveedor">Proveedor</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="no_documento" id="no_documento"
+                    aria-label="Floating label select example">
+                </input>
+                <label for="no_documento">No. Documento</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="concepto" id="concepto" aria-label="Floating label select example">
+                    <option disabled selected>Seleccionar</option>
+                </select>
+                <label for="concepto">Concepto</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="autorizo" id="autorizo" aria-label="Floating label select example">
+                </input>
+                <label for="autorizo">Autorizó</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="area" id="area" aria-label="Floating label select example">
+                </input>
+                <label for="area">Area</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <select class="form-select" name="vehiculo" id="vehiculo" aria-label="Floating label select example">
+                    <option disabled selected>Seleccionar</option>
+                    <option value="NO APLICA">NO APLICA</option>
+                </select>
+                <label for="vehiculo">Vehículo</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="kilometraje" id="kilometraje"
+                    aria-label="Floating label select example">
+                </input>
+                <label for="kilometraje">Kilometraje</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="importe" id="importe" aria-label="Floating label select example">
+                </input>
+
+                <label for="importe">Importe</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input class="form-control" name="iva" id="iva" aria-label="Floating label select example">
+                </input>
+
+                <label for="iva">Iva</label>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-floating">
+                <input readonly class="form-control" name="total" id="total" aria-label="Floating label select example">
+                </input>
+
+                <label for="total">Total</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-floating">
+                <input type="text" class="form-control" name="detalle" id="detalle">
+                <label for="detalle">Detalle</label>
+            </div>
+        </div>
+        <div class="col">
+            <button type="button" id="agregar" class="btn btn-success" style="height: 55px;"><i class="fa-solid fa-circle-plus" style="color: white; font-size: 20px;"></i> Agregar registro</button>
+        </div>
+    </div>
+</form>
+<br>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal" style="height: 55px;">
+    <i class="fa-solid fa-floppy-disk" style="color: white;"></i>   Guardar póliza
+  </button>
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Los datos son correctos?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" id="confirmBtn">Sí</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="cancelBton" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal2" style="height: 55px;">
+    <i class="fa-solid fa-ban" style="color: white;"></i>   Cancelar póliza
+  </button>
+<div class="modal fade" id="confirmModal2" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Deseas cancelar la póliza?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" id="confirmBtnCancel">Sí</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<hr>
+</br>
+<div class="contenedor-tabla">
+    <table class="table" id="registros">
+        <thead class="thead-dark">
+            <tr>
+                <th>Doc.</th>
+                <th>Concepto</th>
+                <th>Detalle</th>
+                <th>Importe</th>
+                <th>Iva</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in registros %}
+            <tr>
+                <td class="doc">{{i.NO_DOCUMENTO}}</td>
+                <td class="concep">{{i.CONCEPTO}}</td>
+                <td class="deta">{{i.DETALLE}}</td>
+                <td class="impor">{{i.IMPORTE}}</td>
+                <td class="iva">{{i.IVA}}</td>
+                <td class="total">{{i.TOTAL}}</td>
+                <td class="eliminar"><a href="/borrar/detalle_temporal/{{i.NO_REGISTRO}}"><i class="fa-solid fa-trash-can" style="color: red;"></i></a></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+<script>
+    var cargador = document.getElementById("cargador");
+    var alerta = document.createElement('div');
+    var zona = document.getElementById('zona');
+    cargador.style.display = "flex";
+
+    document.getElementById('confirmBtn').addEventListener('click', function() {
+
+        fetch('/guardar_poliza')
+            .then(response => response.json())
+            .then(data => {
+                cargador.style.display = "none";
+                // Manipula los datos recibidos de tu servidor Flask aquí
+                if (data.respuesta == 'Exitosa') {
+                    alert("Guardado correcto");
+                    window.location.href = '/alta_gastos';
+                }
+
+            })
+            .catch(error => {
+                // Maneja el error en caso de que la petición falle
+                alert('Error ppa: ' + error);
+            });
+
+        
+        var modal = document.getElementById('confirmModal');
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('style', 'display: none');
+        document.body.classList.remove('modal-open');
+        var modalBackdrop = document.getElementsByClassName('modal-backdrop')[0];
+        modalBackdrop.parentNode.removeChild(modalBackdrop);
+    });
+
+    document.getElementById('confirmBtnCancel').addEventListener('click', function() {
+        cargador.style.display = "flex";
+        fetch('/cancelar_gastos')
+        .then(response => response.json())
+        .then(data => {
+            cargador.style.display = "none";
+            if(data.respuesta == "Exitosa"){
+                alert("Póliza cancelada con exito");
+                window.location.href = '/alta_gastos';
+            }
+            else{
+                alert("Póliza sin registros");
+            }
+        })
+        .catch(error =>{
+            console.error("error de tipo: ", error);
+        });
+        var modal = document.getElementById('confirmModal2');
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('style', 'display: none');
+        document.body.classList.remove('modal-open');
+        var modalBackdrop = document.getElementsByClassName('modal-backdrop')[0];
+        modalBackdrop.parentNode.removeChild(modalBackdrop);
+    });
+
+    cargador.style.display = "flex";
+    fetch('/api/verificar_registros')
+        .then(response => response.json())
+        .then(data => {
+            cargador.style.display = "none";
+            // Manipula los datos recibidos de tu servidor Flask aquí
+            if (data.respuesta == 'true') {
+                var forma = document.getElementById('forma_pago');
+                var cta_pago = document.getElementById('cta_pago');
+                var fecha = document.getElementById('fecha_pago');
+                var descripcion = document.getElementById('descripcion');
+                forma.value = data.forma_pago;
+                forma.disabled = true;
+
+                var nuevaOpcion = document.createElement('option');
+                nuevaOpcion.value = data.ct_pago;
+                nuevaOpcion.text = data.ct_pago;
+
+                cta_pago.add(nuevaOpcion);
+                cta_pago.value = data.ct_pago;
+                cta_pago.disabled = true;
+
+                fecha.value = data.fecha_pago;
+                fecha.disabled = true;
+
+                descripcion.value = data.descripcion;
+                descripcion.disabled = true;
+
+            }
+
+        })
+        .catch(error => {
+            // Maneja el error en caso de que la petición falle
+            alert('Error ppa: ' + error);
+        });
+
+    var agregrar = document.getElementById("agregar");
+
+    var form = document.querySelector('#agregar_registro');
+
+    agregrar.addEventListener("click", function () {
+        
+
+
+        var forma = document.getElementById('forma_pago');
+        var cta_pago = document.getElementById('cta_pago');
+        var fecha = document.getElementById('fecha_pago');
+        var descripcion = document.getElementById('descripcion');
+
+        var formData = new FormData(form);
+        var jsonData = {};
+
+        for (var [key, value] of formData.entries()) {
+            jsonData[key] = value;
+        }
+        jsonData['forma_pago'] = forma.value;
+        jsonData['cta_pago'] = cta_pago.value;
+        jsonData['fecha_pago'] = fecha.value;
+        jsonData['descripcion'] = descripcion.value;
+        console.log(jsonData);
+        fetch('/agregar_registro', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                cargador.style.display = "none";
+                // Procesa la respuesta del servidor aquí
+
+                if (data.Operacion === 'Exitosa') {
+
+                    console.log(data.Operacion);
+                    form.reset();
+
+                    forma.value = jsonData.forma_pago;
+                    forma.disabled = true;
+
+                    var nuevaOpcion = document.createElement('option');
+                    nuevaOpcion.value = jsonData.cta_pago;
+                    nuevaOpcion.text = jsonData.cta_pago;
+
+                    cta_pago.add(nuevaOpcion);
+                    cta_pago.value = jsonData.cta_pago;
+                    cta_pago.disabled = true;
+
+                    fecha.value = jsonData.fecha_pago;
+                    fecha.disabled = true;
+
+                    descripcion.value = jsonData.descripcion;
+                    descripcion.disabled = true;
+
+                    var tabla = document.getElementById('registros');
+                    var fila = tabla.insertRow(); // Insertar una nueva fila al final de la tabla
+
+                    // Crear celdas para la nueva fila
+                    var celda1 = fila.insertCell();
+                    var celda2 = fila.insertCell();
+                    var celda3 = fila.insertCell();
+                    var celda4 = fila.insertCell();
+                    var celda5 = fila.insertCell();
+                    var celda6 = fila.insertCell();
+                    var celda7 = fila.insertCell();
+
+                    // Asignar contenido a las celdas
+                    celda1.innerHTML = jsonData.no_documento;
+                    celda2.innerHTML = jsonData.concepto;
+                    celda3.innerHTML = jsonData.detalle;
+                    celda4.innerHTML = jsonData.importe;
+                    celda5.innerHTML = jsonData.iva;
+                    celda6.innerHTML = jsonData.total;
+                    celda7.innerHTML = "<a href='/borrar/detalle_temporal/" + data.no_registro + "'><i class='fa-solid fa-trash-can' style='color: red;'></i></a>"
+
+                    celda6.className = 'total';
+                    celda5.className = 'iva';
+                    celda4.className = 'impor';
+                    alerta.classList.add('alert', 'alert-success');
+                    alerta.textContent = '¡Registro agregado!';
+
+
+
+                } else {
+                    alerta.classList.add('alert', 'alert-danger');
+                    alerta.textContent = '¡Registro fallido, faltan datos!';
+                }
+                zona.appendChild(alerta);
+                setTimeout(function () {
+                    alerta.remove(); // Eliminar la alerta del DOM después de 2 segundos
+                }, 3000); // 2000 milisegundos = 2 segundos
+            })
+            .catch(error => {
+                console.error('Error al enviar los datos:', error);
+            });
+    });
+
+
+
+    var forma_pago = document.getElementById("forma_pago");
+
+    // Agregar un evento "change" al elemento select
+    forma_pago.addEventListener("change", function () {
+        // Obtener el valor de la opción seleccionada
+        cargador.style.display = "flex";
+        var opcion_forma = forma_pago.options[forma_pago.selectedIndex].value;
+
+        fetch('/api/forma_pago/' + opcion_forma)
+            .then(response => response.json())
+            .then(data => {
+                cargador.style.display = "none";
+                // Manipula los datos recibidos de tu servidor Flask aquí
+                var forma_pago = document.getElementById("cta_pago");
+                forma_pago.innerHTML = "";
+                opcion = document.createElement("option");
+                opcion.value = "";
+                opcion.text = "Seleccionar";
+                opcion.disabled = true;
+                opcion.selected = true;
+                forma_pago.appendChild(opcion);
+
+                for (var i = 0; i < data.length; i++) {
+                    var opcion = document.createElement("option");
+                    opcion.value = data[i];
+                    opcion.text = data[i];
+                    forma_pago.appendChild(opcion);
+                }
+
+            })
+            .catch(error => {
+                // Maneja el error en caso de que la petición falle
+                alert('Error ppa: ' + error);
+            });
+    });
+
+    var categoria = document.getElementById("categoria");
+
+    // Agregar un evento "change" al elemento select
+    categoria.addEventListener("change", function () {
+        // Obtener el valor de la opción seleccionada
+        var selectedOption = categoria.options[categoria.selectedIndex].value;
+
+        fetch('/api/concepto/' + selectedOption)
+            .then(response => response.json())
+            .then(data => {
+                // Manipula los datos recibidos de tu servidor Flask aquí
+                var categoria = document.getElementById("concepto");
+                categoria.innerHTML = "";
+                opcion = document.createElement("option");
+                opcion.value = "";
+                opcion.text = "Seleccionar";
+                opcion.disabled = true;
+                opcion.selected = true;
+                categoria.appendChild(opcion);
+
+                for (var i = 0; i < data.length; i++) {
+                    var opcion = document.createElement("option");
+                    opcion.value = data[i];
+                    opcion.text = data[i];
+                    categoria.appendChild(opcion);
+                }
+
+            })
+            .catch(error => {
+                // Maneja el error en caso de que la petición falle
+                alert('Error ppa: ' + error);
+            });
+    });
+
+    var vehiculo = document.getElementById("vehiculo");
+
+    vehiculo.addEventListener("change", function () {
+        var selectedOption = vehiculo.options[vehiculo.selectedIndex].value;
+        console.log(selectedOption);
+        if (selectedOption == "NO APLICA") {
+            var kilometraje = document.getElementById("kilometraje");
+
+            kilometraje.value = "NO APLICA";
+            kilometraje.readOnly = true;
+        }
+    });
+
+    var importe = document.getElementById("importe");
+
+    importe.addEventListener("input", function () {
+        validarNumeroFlotante(this);
+    });
+
+    importe.addEventListener("blur", function () {
+        actualizar_total_iva();
+    })
+
+    var iva = document.getElementById("iva");
+
+    iva.addEventListener("input", function () {
+        validarNumeroFlotante(this);
+    });
+
+    iva.addEventListener("input", function () {
+        actualizar_total();
+    });
+
+    var total = document.getElementById("total");
+    total.addEventListener("input", function () {
+        validarNumeroFlotante();
+    });
+
+    function validarNumeroFlotante(input) {
+        // Remover cualquier carácter que no sea un número o un punto
+        input.value = input.value.replace(/[^0-9.]/g, '');
+
+        // Verificar si hay más de un punto decimal
+        var partes = input.value.split('.');
+        if (partes.length > 2) {
+            input.value = partes[0] + '.' + partes.slice(1).join('');
+        }
+    }
+
+    function actualizar_total_iva() {
+        var punto = false;
+        iva.value = importe.value * 0.16;
+        total.value = parseFloat(importe.value) + parseFloat(iva.value);
+        var longitud = '' + importe.value;
+        for (let index = 0; index < longitud.length; index++) {
+            const element = longitud[index];
+            console.log(element);
+            if (element == '.') {
+                punto = true;
+                break
+
+            }
+        }
+        if (punto === false) {
+            importe.value = importe.value + '.00';
+        }
+
+    }
+
+    function actualizar_total() {
+        var punto = false;
+        var longitud = '' + iva.value;
+        for (let index = 0; index < longitud.length; index++) {
+            const element = longitud[index];
+            console.log(element);
+            if (element == '.') {
+                punto = true;
+                break
+
+            }
+        }
+        if (punto === false) {
+            iva.value = iva.value + '.00';
+        }
+        total.value = parseFloat(importe.value) + parseFloat(iva.value);
+    }
+</script>
+
+{%endblock%}

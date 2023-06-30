@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+{%block cuerpo%}
+<div class="contenedor_pagina_vista_cliente">
+	<div class="contenedor_vista_cliente">
+        <h2>BUSCAR CLIENTE</h2>
+        <input type="text" id="input_cliente" placeholder="Escriba el nombre o número de documento">
+    </div>
+    <div class="cliente_contenedor">
+        <div class="datos_primarios">
+            <div class="img_contenedor">
+                <img src="{{url_for('static', filename='img/avatar.png')}}" alt="avatar aquí" id="avatar">
+            </div>
+            <div class="contenedor_nombre">
+                <h4 id="nombre_mostrar"></h4>
+            </div>
+            <div class="contacto_ciente">
+                <label for="cel"><b>Número de contacto:</b></label>
+                <strong id="cel"></strong>
+                <br>
+                <label for="em"><b>Email:</b></label>
+                <strong id="em"></strong>
+                <br>
+            </div>
+        </div>
+        <div class="cliente_datos">
+            <label for="tdoc_m"><b>Tipo de documento:</b></label>
+            <strong id="tdoc_m"></strong>
+            <br>
+            <label for="ndoc_m"><b>Número de documento:</b></label>
+            <strong id="ndoc_m"></strong>
+            <br>
+            <label for="ncred"><b>Número de créditos:</b></label>
+            <strong id="ncred"></strong>
+            <br>
+            <label for="moncre"><b>Monto de crédito:</b></label>
+            <strong id="moncre"></strong>
+            <br>
+            <label for="dirc"><b>Dirección:</b></label>
+            <strong id="dirc"></strong>
+            <br>
+            <label for="puntos"><h2>Puntos:</h2></label>
+            <br>
+            <strong id="puntos"></strong>
+            <label for="calificacion"><h2>Calificación:</h2></label>
+            <br>
+            <strong id="calificacion"></strong>
+        </div>
+    </div>
+</div>
+{%endblock%}

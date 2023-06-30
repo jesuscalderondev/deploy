@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/c31f955b45.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+	<link rel="icon" href="{{url_for('static', filename='img/logo_R7_color.png')}}">
+	<title>{%block titulo%}Inicio{%endblock%}</title>
+</head>
+
+<body>
+
+	<div class="CARGADOR" id="cargador">
+		<div class="tasa">
+			<H1>TU NEGOCIO</H1>
+		</div>
+		<div class="oreja">
+		</div>
+		<div class="smoke">
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+			<div class="particle"></div>
+		  </div>
+		  
+	</div>
+	<nav class="navbar navbar-dark bg-dark fixed-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">TU NEGOCIO</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+				data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+				aria-labelledby="offcanvasDarkNavbarLabel">
+				<div class="offcanvas-body">
+					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="/">Inicio</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								Clientes
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="/agregar_cliente">Alta Cliente</a></li>
+								<li><a class="dropdown-item" href="/cliente">Cliente(s)</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								Gastos
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="/alta_gastos">Alta Gasto</a></li>
+								<li><a class="dropdown-item" href="/gastos">Gasto(s)</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="fa-solid fa-folder-open" style="color: #fff;"></i> Archivo
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="#">Abrir</a></li>
+								<li><a class="dropdown-item" href="#">Nuevo</a></li>
+								<li><a class="dropdown-item" href="#">Guardar</a></li>
+								<li><a class="dropdown-item" href="#">Cerrar</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="fa-solid fa-puzzle-piece" style="color: #fff;"></i> Módulos
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="#">Bancos</a></li>
+								<li><a class="dropdown-item" href="#">Caja</a></li>
+								<li><a class="dropdown-item" href="#">Clientes</a></li>
+								<li><a class="dropdown-item" href="#">Cobranza</a></li>
+								<li><a class="dropdown-item" href="/contabilidad">Contabilidad</a></li>
+								<li><a class="dropdown-item" href="#">Empleados</a></li>
+								<li><a class="dropdown-item" href="#">Préstamos</a></li>
+								<li><a class="dropdown-item" href="#">Prospectos</a></li>
+								<li><a class="dropdown-item" href="#">Reportes</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="fa-solid fa-book" style="color: #fff;"></i> Catálogo
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="#">Areas/Rutas</a></li>
+								<li><a class="dropdown-item" href="#">Equipos de Computo</a></li>
+								<li><a class="dropdown-item" href="#">Moviliario y Equipo</a></li>
+								<li><a class="dropdown-item" href="#">Promotores</a></li>
+								<li><a class="dropdown-item" href="#">Proveedores</a></li>
+								<li><a class="dropdown-item" href="#">Puestos</a></li>
+								<li><a class="dropdown-item" href="#">Servicios</a></li>
+								<li><a class="dropdown-item" href="#">Vehiculos</a></li>
+							</ul>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								<i class="fa-solid fa-gear" style="color: #fff;"></i> Configuración
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark">
+								<li><a class="dropdown-item" href="#">Sistema</a></li>
+								<li><a class="dropdown-item" href="#">Usuarios</a></li>
+							</ul>
+						</li>
+
+						<li class="nav-item"> <a href="#"><i class="fa-solid fa-circle-question"></i> Ayuda</a></li>
+					</ul>
+					<form class="d-flex mt-3" role="search">
+						<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+						<button class="btn btn-success" type="submit">Search</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="contenedor_contenido">
+		<div class="zona" id="zona"></div>
+		{%block cuerpo%}
+		{%endblock%}
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

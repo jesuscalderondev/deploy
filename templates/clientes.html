@@ -1,0 +1,479 @@
+{% extends "base.html"%}
+{%block body%}
+<form action="/agregar_cliente" method="POST" class="row g-3 needs-validation">
+    <h2>Personal</h2>
+    <div class="col-md-2">
+        <label class="form-label" class="form-label" for="fecha_alta">Fecha de alta</label>
+        <input class="form-control" type="date" class="form-control" name="fecha_alta" id="fecha_alta">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="nuevo_folio">NID Cliente </label>
+        <input class="form-control" type="text" disabled="" value="{{nuevo_folio}}">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="apellido_paterno">Apellido paterno</label>
+        <input class="form-control" type="text" name="apellido_paterno" id="apellido_paterno">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="apellido_materno">Apellido materno</label>
+        <input class="form-control" type="text" name="apellido_materno" id="apellido_materno">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="nombre">Nombre(s)</label>
+        <input class="form-control" type="text" name="nombres" id="nombre">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="tdoc">Tipo de documento</label>
+        <select class="form-control" name="tipo_identificacion" id="tdoc">
+            {%for doc in docs%}
+            <option value="{{doc}}">{{doc}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ndoc">Número de documento</label>
+        <input class="form-control" type="text" name="numero_identificacion" id="ndoc">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="nacimiento">Fecha de nacimiento </label>
+        <input class="form-control" type="date" name="fecha_nacimiento" id="nacimiento">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="numcel">Teléfono</label>
+        <input class="form-control" type="tel" name="celular" id="numcel" maxlength="12" onkeyup="">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="email">Correo electrónico</label>
+        <input class="form-control" type="email" name="email" id="email">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="pais">País de nacimiento</label>
+        <select class="form-control" name="pais_nacimiento" id="pais">
+            <option disabled="" selected="">-- Seleccione un país --</option>
+            {%for pais in paises%}
+            <option value="{{pais}}">{{pais}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-md-3" id="estadodiv">
+        <label class="form-label" for='estado'>Entidad federativa de nacimiento</label>
+        <select class="form-control" name="estado_nacimiento" id="estado_nacimiento">
+            <option disabled="" selected="">-- Seleccione un país --</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="direccion">Calle</label>
+        <input class="form-control" type="text" name="calle" id="direccion">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="entre_calle_dom">Entre calle</label>
+        <input class="form-control" type="text" name="entre_calle" id="entre_calle_dom">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="y_calle">Y calle</label>
+        <input class="form-control" type="text" name="y_calle" id="y_calle">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="no_exterior">No. exterior</label>
+        <input class="form-control" type="text" id="no_exterior" name="no_exterior">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="no_interior">No. interior</label>
+        <input class="form-control" type="text" id="no_interior" name="no_interior">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="detallesr">Detalles del domicilio</label>
+        <input class="form-control" type="text" name="caracteristicas_domicilio" id="descripcion">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="tiempo_domicilio">Antigüedad en el domicilio</label>
+        <input class="form-control" type="text" id="tiempo_domicilio" name="antiguedad_domicilio">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="tipo_vivienda">Tipo de vivienda</label>
+        <select class="form-control" name="tipo_vivienda" id="tipo_vivienda">
+            <option disabled="" selected="">-- Seleccione un tipo de vivienda --</option>
+            {%for vivienda in viviendas%}
+            <option value="{{vivienda}}">{{vivienda}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="dependientes">Dependientes</label>
+        <input class="form-control" type="text" name="dependientes" id="dependientes">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="colonia">Colonia</label>
+        <input class="form-control" type="text" id="colonia" name="colonia">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="codigo_postal">Código postal</label>
+        <input class="form-control" type="text" name="codigo_postal" id="codigo_postal">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="genero">Genero</label>
+        <select class="form-control" name="genero" id="genero">
+            <option disabled="" selected="">-- Seleccione un genero --</option>
+            <option value="F">Femenino</option>
+            <option value="M">Masculino</option>
+            <option value="O">Otro</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="rfc">R.F.C</label>
+        <input class="form-control" type="text" id="rfc" name="rfc" minlength="13" maxlength="13">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="curp">CURP</label>
+        <input class="form-control" type="text" id="curp" name="curp" minlength="18" maxlength="18">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="estado">Estado civil</label>
+        <select class="form-control" name="estado_civil" id="estado_civil">
+            <option selected="" disabled="">-- Seleccione un estado --</option>
+            <option value="union">Unión libre</option>
+            <option value="">Casado</option>
+            <option value="">Soltero</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="pais_r">País de residencia</label>
+        <select class="form-control" name="pais_nacimiento" id="pais_r">
+            <option disabled="" selected="">-- Seleccione un país --</option>
+            {%for pais in paises%}
+            <option value="{{pais}}">{{pais}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="col-md-3" id="estadordiv">
+        <label class="form-label" for='estadord'>Estado de residencia</label>
+        <select class="form-control" id="estadord" name="estado_domicilio">
+            <option disabled="" selected="">-- Seleccione un país --</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ciudad_residencia">Ciudad de residencia</label>
+        <input class="form-control" type="text" name="ciudad" id="ciudad_residencia">
+    </div>
+    <h2>Negocio</h2>
+    <div class="form-check form-switch">
+        <label class="form-check-label" for="si">Mismo domicilio que el particular</label>
+        <input class="form-check-input" type="checkbox" id="si" role="switch">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="nombre_negocio">Nombre del negocio</label>
+        <input class="form-control" type="text" id="nombre_negocio" name="nombre_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="giro_negocio">Giro del negocio</label>
+        <input class="form-control" type="text" id="giro_negocio" name="giro_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="horario">Horario </label>
+        <input class="form-control" type="text" name="horario" id="horario">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="tiempo_domicilio_negocio">Tiempo de antigüedad en el domicilio </label>
+        <input class="form-control" type="text" id="tiempo_domicilio_negocio" name="antiguedad_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ingresos_d">Ingresos diarios</label>
+        <input class="form-control" type="text" name="ingresos_diarios" id="ingresos_d" onblur="formatNumber(this)">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="otros_ingresos">Otros ingresos</label>
+        <input class="form-control" type="text" name="otros_ingresos" id="otros_ingresos"
+            onblur="formatNumber(this)"><br>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="dir_n">Calle </label>
+        <input class="form-control" type="text" name="calle_negocio" id="dir_n">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="entre_calle_negocio">Entre calle</label>
+        <input class="form-control" type="text" name="entre_calle_negocio" id="entre_calle_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="y_calle_negocio">Y calle</label>
+        <input class="form-control" type="text" name="y_calle_negocio" id="y_calle_negocio">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="no_exterior_negocio">No. exterior</label>
+        <input class="form-control" type="text" id="no_exterior_negocio" name="no_exterior_negocio">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="no_interior_negocio">No. interior</label>
+        <input class="form-control" type="text" id="no_interior_negocio" name="no_interior_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="colonia_n">Colonia</label>
+        <input class="form-control" type="text" name="colonia_negocio" id="colonia_n">
+    </div>
+    <div class="col-md-2">
+        <label class="form-label" for="codigop_negocio">Código postal</label>
+        <input class="form-control" type="text" name="codigo_postal_negocio" id="codigo_postal_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="estado_negocio">Estado</label>
+        <input class="form-control" type="text" name="estado_negocio" id="estado_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ciudad_negocio">Ciudad negocio</label>
+        <input class="form-control" type="text" name="ciudad_negocio" id="ciudad_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="descripcion_negocio">Detalles del domicilio</label>
+        <input class="form-control" type="text" name="caracteristicas_negocio" id="descripcion_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="cel_negocio">Celular</label>
+        <input class="form-control" type="text" name="telefono" id="cel_negocio">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="ruta_asignada">Ruta asignada</label>
+        <select class="form-control" name="ruta" id="ruta">
+            <option value="1">Primera</option>
+            <option value="2">Segunda</option>
+            <option value="3">Tercera</option>
+        </select>
+    </div>
+    <h2>Informativos</h2>
+    <br>
+    <h4>Referencia #1</h4>
+    <div class="col-md-3">
+        <label class="form-label" for="nombre_familiar">Nombre:</label>
+        <input class="form-control" type="text" id="nombre_familiar" name="nombre_referencia1">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="direccion_familiar">Dirección:</label>
+        <input class="form-control" name="direccion_ref1" type="text" id="direccion_familiar">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="telefono_ref1">Celular:</label>
+        <input class="form-control" type="text" name="telefono_ref1" id="telefono_ref1">
+    </div>
+    <h4>Referencia #2</h4>
+    <div class="col-md-3">
+        <label class="form-label" for="nombre_particular">Nombre:</label>
+        <input class="form-control" type="text" id="nombre_particular" name="nombre_referencia2">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="direccion_particular">Dirección:</label>
+        <input class="form-control" type="text" name="direccion_ref2" id="direccion_particular">
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="telefono_ref2">Celular:</label>
+        <input class="form-control" type="text" name="telefono_ref2" id="telefono_ref2">
+    </div>
+
+    <h4>Observaciones</h4>
+
+    <div class="col-md-4">
+        <label class="form-label" for="observacion1">Observación #1</label>
+        <input class="form-control" type="text" id="observacion1" name="observacion_1">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="observacion2">Observación #2</label>
+        <input class="form-control" type="text" id="observacion2" name="observacion_2">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label" for="observacion3">Observación #3</label>
+        <input class="form-control" type="text" id="observacion3" name="observacion_3">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+    <button type="reset" class="btn btn-secondary">Limpiar</button>
+</form>
+<script>
+
+    function formatNumber(input) {
+        // Reemplaza cualquier carácter que no sea un número o un punto decimal
+        input.value = input.value.replace(/[^\d\.]/g, '');
+
+        // Divide la cadena en dos partes en el punto decimal
+        const parts = input.value.split('.');
+        let wholeNumber = parts[0];
+        let decimal = parts[1];
+
+        // Elimina los caracteres de separación de miles
+        wholeNumber = wholeNumber.replace(/,/g, '');
+
+        // Concatena ".00" al final si no hay parte decimal
+        if (!decimal) {
+            input.value = wholeNumber + ".00";
+            return;
+        }
+
+        // Redondea la parte decimal a dos decimales
+        decimal = parseFloat("0." + decimal).toFixed(2).split(".")[1];
+
+        // Combina la parte entera y la parte decimal del número con un punto
+        input.value = wholeNumber + '.' + decimal;
+    }
+
+    const phoneInput = document.getElementById('numcel');
+    phoneInput.addEventListener('input', () => {
+        // Obtener el valor actual del input
+        let phoneValue = phoneInput.value;
+        // Eliminar cualquier caracter que no sea número
+        phoneValue = phoneValue.replace(/\D/g, '');
+        // Aplicar el formato XXX-XXX-XXXX al número
+        phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        // Asignar el valor formateado al input
+        phoneInput.value = phoneValue;
+    });
+
+    const telInput = document.getElementById('cel_negocio');
+    telInput.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = telInput.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    telInput.value = phoneValue;
+    });
+
+    const tel_ref1Input = document.getElementById('telefono_ref1');
+    tel_ref1Input.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = tel_ref1Input.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    tel_ref1Input.value = phoneValue;
+    });
+
+    const tel_ref2Input = document.getElementById('telefono_ref2');
+    tel_ref2Input.addEventListener('input', () => {
+    // Obtener el valor actual del input
+    let phoneValue = tel_ref2Input.value;
+    // Eliminar cualquier caracter que no sea número
+    phoneValue = phoneValue.replace(/\D/g, '');
+    // Aplicar el formato XXX-XXX-XXXX al número
+    phoneValue = phoneValue.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    // Asignar el valor formateado al input
+    tel_ref2Input.value = phoneValue;
+    });
+
+
+
+    var pais = document.getElementById('pais');
+    pais.addEventListener('change', function () {
+        fetch('http://127.0.0.1:5000/obtener_ciudades/' + pais.value, { method : 'GET' })
+            .then(response => response.json())
+            .then(function (ciudades) {
+                let select = document.getElementById('estadodiv');
+                let elementos = ciudades.length;
+                let options;
+                for (let index = 0; index < elementos; index++) {
+                    options = options + "<option value='" + ciudades[index] + "'>" + ciudades[index] + "</option>"
+                }
+                select.innerHTML = "<label class='form-label' for='estado'>Entidad federativa de nacimiento </label>" + "<select class='form-control' name='estado_nacimiento' id='estado'>" + options + "</select>";
+            })
+    });
+
+    var pais_r = document.getElementById('pais_r');
+    pais_r.addEventListener('change', function () {
+        fetch('http://127.0.0.1:5000/obtener_ciudades/' + pais_r.value, { method : 'GET' })
+            .then(response => response.json())
+            .then(function (ciudades) {
+                let select = document.getElementById('estadordiv');
+                let elementos = ciudades.length;
+                let options;
+                for (let index = 0; index < elementos; index++) {
+                    options = options + "<option value='" + ciudades[index] + "'>" + ciudades[index] + "</option>"
+                }
+                select.innerHTML = "<label class='form-label' for='estadord'>Estado de domicilio </label>" + "<select class='form-control' name='estado_domicilio' id='estadord'>" + options + "</select>";
+            })
+    });
+
+
+
+
+    var busi = document.getElementById('si');
+    busi.addEventListener('change', () => {
+        let direccion = document.getElementById('direccion').value;
+        let direccion_n = document.getElementById('dir_n');
+
+        let colonia = document.getElementById('colonia').value;
+        let colonia_negocio = document.getElementById('colonia_n');
+
+        let ciudad = document.getElementById('ciudad_residencia').value;
+        let ciudad_negocio = document.getElementById('ciudad_negocio');
+
+        let codigop_negocio = document.getElementById('codigo_postal_negocio');
+        let codigop = document.getElementById('codigo_postal').value;
+
+        let descripcion_negocio = document.getElementById('descripcion_negocio');
+        let descripcion = document.getElementById('descripcion').value;
+
+        let exterior = document.getElementById('no_exterior').value;
+        let exterior_negocio = document.getElementById('no_exterior_negocio');
+
+        let interior = document.getElementById('no_interior').value;
+        let interior_negocio = document.getElementById('no_interior_negocio');
+
+        let entre = document.getElementById('entre_calle_dom').value;
+        let entre_negocio = document.getElementById('entre_calle_negocio');
+
+        let y_calle = document.getElementById('y_calle').value;
+        let y_negocio = document.getElementById('y_calle_negocio');
+
+        let estado_negocio = document.getElementById('estado_negocio');
+        let estado = document.getElementById('estadord').value;
+
+
+        if (busi.checked) {
+            direccion_n.value = direccion;
+            colonia_negocio.value = colonia;
+            descripcion_negocio.value = descripcion;
+            codigop_negocio.value = codigop;
+            ciudad_negocio.value = ciudad;
+            y_negocio.value = y_calle;
+            entre_negocio.value = entre;
+            interior_negocio.value = interior;
+            exterior_negocio.value = exterior;
+            estado_negocio.value = estado;
+
+            direccion_n.disabled = true;
+            colonia_negocio.disabled = true;
+            descripcion_negocio.disabled = true;
+            codigop_negocio.disabled = true;
+            ciudad_negocio.disabled = true;
+            y_negocio.disabled = true;
+            entre_negocio.disabled = true;
+            interior_negocio.disabled = true;
+            exterior_negocio.disabled = true;
+            estado_negocio.disabled = true;
+        }
+        else {
+            direccion_n.value = '';
+            colonia_negocio.value = '';
+            codigop_negocio.value = '';
+            descripcion_negocio.value = '';
+            ciudad_negocio.value = '';
+            y_negocio.value = '';
+            entre_negocio.value = '';
+            interior_negocio.value = '';
+            exterior_negocio.value = '';
+            estado_negocio.value = '';
+
+            direccion_n.disabled = false;
+            colonia_negocio.disabled = false;
+            descripcion_negocio.disabled = false;
+            codigop_negocio.disabled = false;
+            ciudad_negocio.disabled = false;
+            y_negocio.disabled = false;
+            entre_negocio.disabled = false;
+            interior_negocio.disabled = false;
+            exterior_negocio.disabled = false;
+            estado_negocio.disabled = false;
+
+        }
+    });
+</script>
+{%endblock%}
